@@ -1,29 +1,76 @@
 -- Title: TouchAndReact
--- Name: Nice Mena
+-- Name: Mice Mena
 -- Course: ICS2O/3C
--- This program 
+-- This program that displays a button. When you click the button it changes 
+-- color and displays text and an image.
 
--- set the background colour
-display.setDefault("background", 255/255, 80/255, 80/255)
-
--- hide status bar
+-- set the background color 
+display.setDefault ("background", 215/255, 61/255, 121/255)
+ 
+-- hide the status bar
 display.setStatusBar(display.HiddenStatusBar)
 
--- create blue button, set it's positions and make it visible
-local blueButton = display.newImageRect("Images/Fast Button Inactive@2x.png", 198, 96)
+-- create blue button, set it's position and make it visible
+local blueButton = display.newImageRect("Images/Fast Button Inactive@2x.png", 198, 98)
 blueButton.x = display.contentWidth/2
 blueButton.y = display.contentHeight/2
 blueButton.isVisible = true 
 
--- create red button, set its position and make it invisible
-local redButton = display.newImageRect("Images/Fast Button Active@2x.png", 198, 96)
+-- create red button, set it's position and make it invisible
+local redButton = display.newImageRect("Images/Fast Button Active@2x.png", 198, 98)
 redButton.x = display.contentWidth/2
 redButton.y = display.contentHeight/2
 redButton.isVisible = false
 
--- creat text object, set its position and make it invisble
-local textObject = display.newText ("Clicked!", 0,0, nil, 50)
+-- create text object, set it's position and make it invisible
+local textObject = display.newText ("Clicked!", 0, 0, nil, 50)
 textObject.x = display.contentWidth/2
 textObject.y = display.contentHeight/3
 textObject:setTextColor (1, 1, 0)
 textObject.isVisible = false
+
+-- Function: BlueButtonListener
+-- Input: touch listener
+-- Output: none
+-- Description: when blue button is clicked, it will make the text 
+-- appear with red button and make the blue button disappear
+local function BlueButtonListener(touch)
+	if (touch.phase == "began") then
+		blueButton.isVisible = false
+		redButton.isVisible = true
+		textObject.isVisible = true
+	end 
+
+	if (touch.phase == "ended") then
+		blueButton.isVisible = true
+		redButton.isVisible = false
+		textObject.isVisible = false
+	end
+end
+-- Function: RedButtonListener
+-- Input: touch listener
+-- Output: none
+-- Description: when red button is released, it will make the text disappear
+-- and red button
+-- disappear, and then blue button reappear
+local function RedButtonListener(touch)
+
+	if (touch.phase == "ended") then
+		blueButton.isVisible = true
+		redButton.isVisible = false
+		textObject.isVisible = false
+	end
+end
+-- add the event listeners 
+blueButton:addEventListener("touch",BlueButtonListener) 
+redButton:addEventListener("touch", RedButtonListener)
+
+-- create local variables
+local RandomSound
+
+--correct sound
+local RandomSound = audio.loadSound( "sounds/bensound-littleidea.mp3" )
+local backgroundMusic
+
+-- setting the music
+backgroundMusic = audio.play(RandomSound)
